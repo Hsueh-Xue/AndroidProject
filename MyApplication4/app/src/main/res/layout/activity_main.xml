@@ -19,6 +19,8 @@
         android:layout_above="@id/bv_bottomNavigation"
         android:layout_below="@id/toolbar" />
 
+
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bv_bottomNavigation"
         android:layout_width="match_parent"

@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new MapFragment();
                         return fragment;
                     case 3:
-                        fragment = new ChooseAreaFragment();
+                        fragment = new SettingsFragment();
                         return fragment;
                 }
                 return null;

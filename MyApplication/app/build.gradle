@@ -26,6 +26,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation 'com.amap.api:location:latest.integration'
-    implementation 'com.amap.api:map2d:latest.integration'
+    implementation 'com.amap.api:3dmap:7.1.0'
+    implementation 'com.amap.api:map2d:6.0.0'
+    implementation 'com.amap.api:location:4.7.2'
+    implementation 'com.amap.api:search:7.1.0'
+    implementation 'com.amap.api:navi-3dmap:7.1.0_3dmap7.1.0'
+
 }

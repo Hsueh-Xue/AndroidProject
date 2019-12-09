@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.finalproject.Weather.TodayFragment;
 import com.example.finalproject.db.City;
 import com.example.finalproject.db.County;
 import com.example.finalproject.db.Province;
@@ -113,11 +114,23 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     queryCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(position).getWeatherId();
+//                    Log.i("TodayFragment", "step1");
+//                    boolean result = getActivity() instanceof MainActivity;
+//                    if (getActivity() instanceof MainActivity) {
+//                        Intent intent = new Intent(getActivity(), MainActivity.class);
+//                        intent.putExtra("weather_id", weatherId);
+//                        startActivity(intent);
+//                        getActivity().finish();
+//                    } else {
+                        Log.i("TodayFragment", "choose" + weatherId);
+                        TodayFragment todayFragment = (TodayFragment) getParentFragment();
+                        todayFragment.drawerLayout.closeDrawers();
+                        todayFragment.swipeRefresh.setRefreshing(true);
+                        todayFragment.requestWeather(weatherId);
+//                    }
                 }
-//                else if (currentLevel == LEVEL_COUNTY) {
-//                    String weatherId = countyList.get(position).getWeatherId();
-//                    Intent intent = new Intent(getActivity(), )
-//                }
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {

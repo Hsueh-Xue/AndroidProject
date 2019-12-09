@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.finalproject.Weather.RecommendFragment;
+import com.example.finalproject.util.UserManage;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -91,7 +92,11 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new MapFragment();
                         return fragment;
                     case 3:
-                        fragment = new SettingsFragment();
+                        if (UserManage.getInstance().autoLogin(MainActivity.this)) {
+                            fragment = new SettingsFragment();
+                        } else {
+                            fragment = new LoginFragment();
+                        }
                         return fragment;
                 }
                 return null;

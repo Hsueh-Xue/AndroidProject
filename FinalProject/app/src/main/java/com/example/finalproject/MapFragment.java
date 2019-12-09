@@ -48,7 +48,7 @@ public class MapFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mapView = (MapView) view.findViewById(R.id.mapview);
+        mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
 
         setLocationMap(view);

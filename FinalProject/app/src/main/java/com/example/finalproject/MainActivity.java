@@ -9,14 +9,20 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.finalproject.Weather.RecommendFragment;
+import com.example.finalproject.db.UserInfo;
 import com.example.finalproject.util.UserManage;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MenuItem menuItem;
+    private LoginFragment loginFragment;
+    private SettingsFragment settingsFragment;
+    private RegisterFragment registerFragment;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -113,5 +119,6 @@ public class MainActivity extends AppCompatActivity {
                 return title[position];
             }
         });
+
     }
 }

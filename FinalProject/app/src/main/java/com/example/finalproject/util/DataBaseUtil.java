@@ -1,6 +1,7 @@
 package com.example.finalproject.util;
 
 import android.net.wifi.WifiManager;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.example.finalproject.db.UserInfo;
@@ -9,9 +10,11 @@ import com.example.finalproject.gson.Weather;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseUtil {
+    private static final String TAG = "DataBaseUtil";
 
     private static DataBaseUtil instance;
 
@@ -27,22 +30,34 @@ public class DataBaseUtil {
     }
 
     public boolean Login(String userName, String password) {
-        UserInfo userInfo = (UserInfo) DataSupport.where("userName = " + userName + " and " +
-                "password = " + password).find(UserInfo.class);
+        UserInfo userInfo = (UserInfo) DataSupport.where("userName = ? and password = ?",
+                userName, password).findFirst(UserInfo.class);
         return userInfo != null;
     }
 
+    public boolean register(String userName, String password) {
+        UserInfo userInfo = DataSupport.where("userName = ?", userName).findFirst(UserInfo.class);
+        if (userInfo == null) {
+            userInfo = new UserInfo();
+            userInfo.setUserName(userName);
+            userInfo.setPassword(password);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void changePassword(String userName, String password, String newPassword) {
-        UserInfo userInfo = (UserInfo) DataSupport.where("userName = " + userName + " and " +
-                "password = " + password).find(UserInfo.class);
+        UserInfo userInfo = (UserInfo) DataSupport.where("userName = ? and password = ?",
+                userName, password).findFirst(UserInfo.class);
         userInfo.setPassword(newPassword);
         userInfo.save();
     }
 
     public List<WeatherInfo> selectWeather(String cityId, int Number) {
         List<WeatherInfo> weatherList =
-                DataSupport.where("cityId = " + cityId).find(WeatherInfo.class);
-        List<WeatherInfo> response = null;
+                DataSupport.where("cityid = ?", cityId).find(WeatherInfo.class);
+        List<WeatherInfo> response = new ArrayList<WeatherInfo>();
         for (int i = 0; i < Number && i < weatherList.size(); ++i) {
             response.add(weatherList.get(i));
         }
@@ -50,12 +65,14 @@ public class DataBaseUtil {
     }
 
     public void saveWeatherInfo(String cityId, String date, String temperature) {
+//        List<WeatherInfo> weatherInfos = DataSupport.findAll(WeatherInfo.class);
         WeatherInfo weatherInfo =
-                DataSupport.where("cityId = " + cityId + "and date = " + date).findFirst(WeatherInfo.class);
+                DataSupport.where("cityid = ? AND date = ?", cityId, date).findFirst(WeatherInfo.class);
         if (weatherInfo == null) {
             weatherInfo = new WeatherInfo();
         }
         weatherInfo.setCityId(cityId);
+        Log.i(TAG, cityId + date);
         weatherInfo.setDate(date);
         weatherInfo.setTemperature(temperature);
         weatherInfo.save();

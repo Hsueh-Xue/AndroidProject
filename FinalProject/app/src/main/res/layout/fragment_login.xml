@@ -23,13 +23,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </EditText>
-        <Button
-            android:id="@+id/loginButton"
-            android:text="登录"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
-        </Button>
+            <Button
+                android:id="@+id/login"
+                android:text="登录"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+            </Button>
+            <Button
+                android:id="@+id/register"
+                android:text="注册"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+            </Button>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

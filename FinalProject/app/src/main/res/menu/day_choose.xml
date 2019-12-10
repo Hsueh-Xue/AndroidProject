@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/day1"
+            android:checked="true"
+            android:title="显示1天">
+        </item>
+        <item
+            android:id="@+id/day2"
+            android:checked="true"
+            android:title="显示2天">
+        </item>
+        <item
+            android:id="@+id/day3"
+            android:checked="true"
+            android:title="显示3天">
+        </item>
+        <item
+            android:id="@+id/day4"
+            android:checked="true"
+            android:title="显示4天">
+        </item>
+        <item
+            android:id="@+id/day5"
+            android:checked="true"
+            android:title="显示5天">
+        </item>
+        <item
+            android:id="@+id/day6"
+            android:checked="true"
+            android:title="显示6天">
+        </item>
+        <item
+            android:id="@+id/day7"
+            android:checked="true"
+            android:title="显示7天">
+        </item>
+
+    </group>
+
+</menu>

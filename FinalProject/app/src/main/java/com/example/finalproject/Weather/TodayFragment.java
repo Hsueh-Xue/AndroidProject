@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +125,7 @@ public class TodayFragment extends Fragment {
             String weatherId = getActivity().getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
             mWeatherId = "CN101210101";
-            requestWeather(weatherId);
+            requestWeather("CN101210101");
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -153,6 +154,7 @@ public class TodayFragment extends Fragment {
     public void requestWeather(final String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key" +
                 "=bc0418b57b2d4918819d3974ac1285d9";
+        Log.i(TAG, weatherUrl);
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -233,7 +235,15 @@ public class TodayFragment extends Fragment {
         degreeText.setText(degree);
         weatherInfoText.setText(weatherInfo);
         forecastLayout.removeAllViews();
-        DataBaseUtil.getInstance().saveWeatherInfo(weather.basic.cityId, updateTime, weather.now.temperature);
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences
+                (getActivity()).edit();
+        Log.i(TAG, weather.basic.cityId);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor.putString("cityId", weather.basic.cityId);
+        editor.apply();
+        String cityId = preferences.getString("cityId", null);
+        Log.i(TAG, "cityId" + cityId);
+        DataBaseUtil.getInstance().saveWeatherInfo(weather.basic.cityId, weather.basic.update.updateTime.split(" ")[0], weather.now.temperature);
         for (Forecast forecast : weather.forecastList) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.forecast_item,
                     forecastLayout, false);

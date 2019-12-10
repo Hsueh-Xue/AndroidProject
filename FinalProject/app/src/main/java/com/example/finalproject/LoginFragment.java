@@ -1,5 +1,6 @@
 package com.example.finalproject;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,7 +19,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.finalproject.util.DataBaseUtil;
 import com.example.finalproject.util.UserManage;
 
 import kotlin.math.UMathKt;
@@ -53,7 +57,7 @@ public class LoginFragment extends Fragment {
 
         userNameEditText = view.findViewById(R.id.userName);
         passwordEditText = view.findViewById(R.id.password);
-        loginButton = view.findViewById(R.id.loginButton);
+        loginButton = view.findViewById(R.id.login);
         rememberPassword = view.findViewById(R.id.rememberPassword);
         autoLogin = view.findViewById(R.id.autoLogin);
         rememberPassword.setChecked(false);
@@ -100,16 +104,24 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 String userName = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                if (autoLogin.isChecked()) {
-                    UserManage.getInstance().saveUserInfo(getActivity(), userName, password,
-                            "true");
-                } else if (rememberPassword.isChecked()) {
-                    UserManage.getInstance().saveUserInfo(getActivity(), userName, password,
-                            "");
-                } else {
-                    UserManage.getInstance().saveUserInfo(getActivity(), userName, "",
-                            "true");
-                }
+                Log.i(TAG, String.valueOf(DataBaseUtil.getInstance().Login(userName,password)));
+//                if (DataBaseUtil.getInstance().Login(userName, password)) {
+//                    FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
+//                    fragmentTransaction.replace(R.layout.fragment_login,
+//                            new RegisterFragment())
+//                    fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
+//                }
+//                if (autoLogin.isChecked()) {
+//                    UserManage.getInstance().saveUserInfo(getActivity(), userName, password,
+//                            "true");
+//                } else if (rememberPassword.isChecked()) {
+//                    UserManage.getInstance().saveUserInfo(getActivity(), userName, password,
+//                            "");
+//                } else {
+//                    UserManage.getInstance().saveUserInfo(getActivity(), userName, "",
+//                            "true");
+//                }
             }
         });
     }

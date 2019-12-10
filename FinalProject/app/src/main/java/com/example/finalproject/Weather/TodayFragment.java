@@ -1,11 +1,7 @@
 package com.example.finalproject.Weather;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,10 +10,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +27,9 @@ import com.example.finalproject.R;
 import com.example.finalproject.gson.Forecast;
 import com.example.finalproject.gson.Weather;
 import com.example.finalproject.service.AutoUpdateService;
+import com.example.finalproject.util.DataBaseUtil;
 import com.example.finalproject.util.HttpUtil;
 import com.example.finalproject.util.Utility;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -125,21 +118,18 @@ public class TodayFragment extends Fragment {
             // 有缓存是直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
             mWeatherId = weather.basic.weatherId;
-            Log.i(TAG, "step3" + mWeatherId);
             showWeatherInfo(weather);
         } else {
             // 无缓存是去服务器查询天气
             String weatherId = getActivity().getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
             mWeatherId = "CN101210101";
-            Log.i(TAG, "step2");
-            requestWeather("CN101210101");
+            requestWeather(weatherId);
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                requestWeather(mWeatherId);
                 requestWeather(mWeatherId);
             }
         });
@@ -163,7 +153,6 @@ public class TodayFragment extends Fragment {
     public void requestWeather(final String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key" +
                 "=bc0418b57b2d4918819d3974ac1285d9";
-        Log.i(TAG, "requestWeather" + weatherId);
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -178,12 +167,10 @@ public class TodayFragment extends Fragment {
                             editor.putString("weather", responseText);
                             editor.apply();
                             mWeatherId = weather.basic.weatherId;
-                            Log.i(TAG, mWeatherId);
                             showWeatherInfo(weather);
                             Intent intent = new Intent(getActivity(), AutoUpdateService.class);
                             getActivity().startService(intent);
                         } else {
-                            Log.i(TAG, "response 获取天气信息失败");
                             Toast.makeText(getActivity(), "获取天气信息失败", Toast.LENGTH_SHORT).show();
                         }
                         swipeRefresh.setRefreshing(false);
@@ -237,7 +224,6 @@ public class TodayFragment extends Fragment {
      * 处理并展示Weather实体类中的数据。
      */
     private void showWeatherInfo(Weather weather) {
-        Log.i(TAG, "showWeatherInfo: " + weather.basic.cityName);
         String cityName = weather.basic.cityName;
         String updateTime = weather.basic.update.updateTime.split(" ")[1];
         String degree = weather.now.temperature + "℃";
@@ -247,6 +233,7 @@ public class TodayFragment extends Fragment {
         degreeText.setText(degree);
         weatherInfoText.setText(weatherInfo);
         forecastLayout.removeAllViews();
+        DataBaseUtil.getInstance().saveWeatherInfo(weather.basic.cityId, updateTime, weather.now.temperature);
         for (Forecast forecast : weather.forecastList) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.forecast_item,
                     forecastLayout, false);

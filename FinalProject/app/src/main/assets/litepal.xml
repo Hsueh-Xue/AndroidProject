@@ -9,6 +9,8 @@
         <mapping class="com.example.finalproject.db.Province" />
         <mapping class="com.example.finalproject.db.City" />
         <mapping class="com.example.finalproject.db.County" />
+        <mapping class="com.example.finalproject.db.UserInfo" />
+        <mapping class="com.example.finalproject.db.WeatherInfo" />
     </list>
 
 </litepal>

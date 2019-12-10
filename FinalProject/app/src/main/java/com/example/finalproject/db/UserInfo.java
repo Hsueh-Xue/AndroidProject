@@ -1,11 +1,11 @@
 package com.example.finalproject.db;
 
-public class UserInfo {
+import org.litepal.crud.DataSupport;
+
+public class UserInfo extends DataSupport {
     private String userName;
 
     private String password;
-
-    private String autoLogin;
 
     public String getUserName() {
         return userName;
@@ -21,13 +21,5 @@ public class UserInfo {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getAutoLogin() {
-        return autoLogin;
-    }
-
-    public void setAutoLogin(String autoLogin) {
-        this.autoLogin = autoLogin;
     }
 }

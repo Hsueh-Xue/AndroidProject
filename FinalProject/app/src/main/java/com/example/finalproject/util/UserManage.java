@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.example.finalproject.db.UserInfo;
 
+import org.litepal.crud.DataSupport;
+
 import java.security.acl.LastOwnerException;
 
 public class UserManage {
@@ -25,6 +27,8 @@ public class UserManage {
         }
         return instance;
     }
+
+
 
     public static void setInstance(UserManage instance) {
         UserManage.instance = instance;

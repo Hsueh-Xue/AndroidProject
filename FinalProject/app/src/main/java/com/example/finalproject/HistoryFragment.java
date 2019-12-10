@@ -9,10 +9,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowId;
+import android.widget.ListView;
 
+import com.example.finalproject.db.WeatherInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HistoryFragment extends Fragment {
+    private ListView listView;
+
+    private List<WeatherInfo> weatherInfoList;
+
     public HistoryFragment() {
 
     }
@@ -27,5 +37,7 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        List<WeatherInfo> list = new ArrayList<>();
+
     }
 }

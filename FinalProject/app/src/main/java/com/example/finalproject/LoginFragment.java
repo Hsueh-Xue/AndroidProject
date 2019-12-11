@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.finalproject.util.DataBaseUtil;
@@ -56,6 +57,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "onViewCreated");
+
+        String storeUserName = UserManage.getInstance().getUserName(getActivity());
+        String storePassword = UserManage.getInstance().getPassword(getActivity());
 
         userNameEditText = view.findViewById(R.id.userName);
         passwordEditText = view.findViewById(R.id.password);
@@ -65,17 +70,13 @@ public class LoginFragment extends Fragment {
         autoLogin = view.findViewById(R.id.autoLogin);
         rememberPassword.setChecked(false);
         autoLogin.setChecked(false);
-        try {
-            String userName = UserManage.getInstance().getUserName(getActivity());
-            userNameEditText.setText(userName);
-            String password = UserManage.getInstance().getPassword(getActivity());
-            passwordEditText.setText(password);
-            Log.i(TAG,password);
-            if (!password.equals("")) {
-                rememberPassword.setChecked(true);
-            }
-        } catch (Exception e) {
-            passwordEditText.setText("");
+
+        userNameEditText.setText(storeUserName);
+        Log.i(TAG, "password" + storePassword);
+        if (storePassword != null && !TextUtils.isEmpty(storePassword)) {
+            Log.i(TAG, "step1");
+            passwordEditText.setText(storePassword);
+            rememberPassword.setChecked(true);
         }
 
         /**
@@ -102,10 +103,37 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        /**
+         * 登录事件
+         */
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userName = userNameEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+                if (DataBaseUtil.getInstance().Login(userName, password)) {
+                    String isAutoLogin = "false";
+                    if (autoLogin.isChecked()) {
+                        isAutoLogin = "true";
+                    } else if (!rememberPassword.isChecked()) {
+                        password = "";
+                    }
+                    UserManage.getInstance().saveUserInfo(getActivity(), userName, password,
+                            isAutoLogin);
+                    ((SettingsFragment) (LoginFragment.this.getParentFragment())).gotoSub();
+                } else {
+                    Toast.makeText(getActivity(), "用户名密码不正确", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        /**
+         * 注册事件
+         */
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((SettingsFragment)(LoginFragment.this.getParentFragment())).gotoRegiste();
+                ((SettingsFragment) (LoginFragment.this.getParentFragment())).gotoRegister();
             }
         });
     }

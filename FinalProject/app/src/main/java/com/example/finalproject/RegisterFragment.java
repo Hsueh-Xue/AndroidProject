@@ -42,5 +42,31 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        userNameEditText = (EditText) view.findViewById(R.id.userName);
+        passwordEditText = (EditText) view.findViewById(R.id.password);
+        registerButton = (Button) view.findViewById(R.id.registerButton);
+        cancelButton = (Button) view.findViewById(R.id.cancel_button);
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String username = userNameEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+
+                if (DataBaseUtil.getInstance().register(username, password)) {
+                    ((SettingsFragment) (RegisterFragment.this.getParentFragment())).gotoLogin();
+                } else {
+                    Toast.makeText(getActivity(), "注册失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((SettingsFragment) (RegisterFragment.this.getParentFragment())).gotoLogin();
+            }
+        });
     }
 }

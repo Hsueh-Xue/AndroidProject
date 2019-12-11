@@ -42,18 +42,11 @@ public class RecommendFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final EditText editText = (EditText) view.findViewById(R.id.editText);
-        Button button = (Button) view.findViewById(R.id.button);
         final ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String URL = editText.getText().toString();
-                Log.i(TAG, URL);
-                Bitmap bitmap = QRCodeUtil.createQRCodeBitmap(URL, 200, 200, "UTF-8", "H", "1",
-                        Color.BLACK, Color.WHITE);
-                imageView.setImageBitmap(bitmap);
-            }
-        });
+        String URL = "https://www.hznu.edu.cn/";
+        Log.i(TAG, URL);
+        Bitmap bitmap = QRCodeUtil.createQRCodeBitmap(URL, 300, 300, "UTF-8", "H", "1",
+                Color.BLACK, Color.WHITE);
+        imageView.setImageBitmap(bitmap);
     }
 }

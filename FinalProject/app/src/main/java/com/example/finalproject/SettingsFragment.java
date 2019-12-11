@@ -29,6 +29,7 @@ public class SettingsFragment extends Fragment {
     FrameLayout frameLayout;
     LoginFragment loginFragment;
     RegisterFragment registerFragment;
+    SubSettingsFragment subSettingsFragment;
 
     public SettingsFragment() {
 
@@ -52,18 +53,21 @@ public class SettingsFragment extends Fragment {
 
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
+        subSettingsFragment = new SubSettingsFragment();
 
         fragmentTransaction.add(R.id.settingsFrameLayout, loginFragment, "login").show(loginFragment);
         fragmentTransaction.add(R.id.settingsFrameLayout, registerFragment, "register").hide(registerFragment);
+        fragmentTransaction.add(R.id.settingsFrameLayout, subSettingsFragment, "subSettings").hide(subSettingsFragment);
 
         fragmentTransaction.commit();
+
+        if (UserManage.getInstance().autoLogin(getActivity())) {
+            Log.i(TAG, "autologin");
+            gotoSub();
+        }
     }
 
-    public void test() {
-        Log.i(TAG, "'test");
-    }
-
-    public void gotoRegiste() {
+    public void gotoRegister() {
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.show(registerFragment).hide(loginFragment).commit();
@@ -73,5 +77,17 @@ public class SettingsFragment extends Fragment {
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.show(loginFragment).hide(registerFragment).commit();
+    }
+
+    public void gotoSub() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.show(subSettingsFragment).hide(loginFragment).commit();
+    }
+
+    public void logout() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.show(loginFragment).hide(subSettingsFragment).commit();
     }
 }

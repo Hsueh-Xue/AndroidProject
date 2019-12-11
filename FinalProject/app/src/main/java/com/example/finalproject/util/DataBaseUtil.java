@@ -41,6 +41,7 @@ public class DataBaseUtil {
             userInfo = new UserInfo();
             userInfo.setUserName(userName);
             userInfo.setPassword(password);
+            userInfo.save();
             return true;
         } else {
             return false;

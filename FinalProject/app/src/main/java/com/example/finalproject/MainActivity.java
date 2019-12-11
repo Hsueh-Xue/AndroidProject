@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
 
-
             private String[] title = {"天气", "历史", "地图", "设置"};
 
             @NonNull
@@ -98,11 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new MapFragment();
                         return fragment;
                     case 3:
-                        if (UserManage.getInstance().autoLogin(MainActivity.this)) {
-                            fragment = new SettingsFragment();
-                        } else {
-                            fragment = new LoginFragment();
-                        }
+                        fragment = new SettingsFragment();
                         return fragment;
                 }
                 return null;

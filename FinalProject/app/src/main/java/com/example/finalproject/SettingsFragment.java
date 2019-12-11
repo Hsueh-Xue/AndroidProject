@@ -7,12 +7,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.finalproject.util.UserManage;
@@ -21,13 +25,10 @@ import com.example.finalproject.util.UserManage;
 public class SettingsFragment extends Fragment {
 
     private static final String TAG = "SettingsFragment";
-    private Button nav_button;
-    private TextView welcome;
-    private EditText oldPassword;
-    private EditText newPassword;
-    private EditText prePassword;
-    private Button changePasswordButton;
-    private Button dayNumberButton;
+
+    FrameLayout frameLayout;
+    LoginFragment loginFragment;
+    RegisterFragment registerFragment;
 
     public SettingsFragment() {
 
@@ -43,21 +44,34 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        nav_button = view.findViewById(R.id.nav_button);
-        welcome = view.findViewById(R.id.welcome);
-        oldPassword = view.findViewById(R.id.old_password);
-        newPassword = view.findViewById(R.id.new_password);
-        prePassword = view.findViewById(R.id.pre_password);
-        changePasswordButton = view.findViewById(R.id.change_password_button);
-        dayNumberButton = view.findViewById(R.id.day_number);
 
+        frameLayout = (FrameLayout) view.findViewById(R.id.settingsFrameLayout);
 
-        changePasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String userName = UserManage.getInstance().getUserName(getActivity());
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            }
-        });
+        loginFragment = new LoginFragment();
+        registerFragment = new RegisterFragment();
+
+        fragmentTransaction.add(R.id.settingsFrameLayout, loginFragment, "login").show(loginFragment);
+        fragmentTransaction.add(R.id.settingsFrameLayout, registerFragment, "register").hide(registerFragment);
+
+        fragmentTransaction.commit();
+    }
+
+    public void test() {
+        Log.i(TAG, "'test");
+    }
+
+    public void gotoRegiste() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.show(registerFragment).hide(loginFragment).commit();
+    }
+
+    public void gotoLogin() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.show(loginFragment).hide(registerFragment).commit();
     }
 }

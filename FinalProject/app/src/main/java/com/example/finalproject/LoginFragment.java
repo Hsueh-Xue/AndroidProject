@@ -1,6 +1,5 @@
 package com.example.finalproject;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +36,8 @@ public class LoginFragment extends Fragment {
 
     Button loginButton;
 
+    Button registerButton;
+
     CheckBox rememberPassword;
 
     CheckBox autoLogin;
@@ -58,6 +60,7 @@ public class LoginFragment extends Fragment {
         userNameEditText = view.findViewById(R.id.userName);
         passwordEditText = view.findViewById(R.id.password);
         loginButton = view.findViewById(R.id.login);
+        registerButton = view.findViewById(R.id.register);
         rememberPassword = view.findViewById(R.id.rememberPassword);
         autoLogin = view.findViewById(R.id.autoLogin);
         rememberPassword.setChecked(false);
@@ -99,29 +102,10 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = userNameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                Log.i(TAG, String.valueOf(DataBaseUtil.getInstance().Login(userName,password)));
-//                if (DataBaseUtil.getInstance().Login(userName, password)) {
-//                    FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
-//                    fragmentTransaction.replace(R.layout.fragment_login,
-//                            new RegisterFragment())
-//                    fragmentTransaction.addToBackStack(null);
-//                    fragmentTransaction.commit();
-//                }
-//                if (autoLogin.isChecked()) {
-//                    UserManage.getInstance().saveUserInfo(getActivity(), userName, password,
-//                            "true");
-//                } else if (rememberPassword.isChecked()) {
-//                    UserManage.getInstance().saveUserInfo(getActivity(), userName, password,
-//                            "");
-//                } else {
-//                    UserManage.getInstance().saveUserInfo(getActivity(), userName, "",
-//                            "true");
-//                }
+                ((SettingsFragment)(LoginFragment.this.getParentFragment())).gotoRegiste();
             }
         });
     }

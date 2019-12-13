@@ -3,14 +3,8 @@ package com.example.finalproject.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.TextView;
 
 import com.example.finalproject.db.UserInfo;
-
-import org.litepal.crud.DataSupport;
-
-import java.security.acl.LastOwnerException;
 
 public class UserManage {
     private static final String TAG = "UserManage";
@@ -40,7 +34,7 @@ public class UserManage {
         editor.putString("USER_NAME", username);
         editor.putString("PASSWORD", password);
         editor.putString("AUTO_LOGIN", autoLogin);
-        editor.commit();
+        editor.apply();
     }
 
     public UserInfo getUserInfo(Context context) {
@@ -85,6 +79,6 @@ public class UserManage {
         editor.putString("USER_NAME", null);
         editor.putString("PASSWORD", null);
         editor.putString("AUTO_LOGIN", null);
-        editor.commit();
+        editor.apply();
     }
 }

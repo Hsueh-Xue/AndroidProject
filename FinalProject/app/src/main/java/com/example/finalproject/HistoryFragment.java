@@ -163,7 +163,6 @@ public class HistoryFragment extends Fragment {
 
     public void refresh() {
         getData();
-        Log.i(TAG, "weather" + weatherInfoList.size());
         List<PointValue> pointValues = new ArrayList<>();
         String[] xData = new String[weatherInfoList.size()];
 

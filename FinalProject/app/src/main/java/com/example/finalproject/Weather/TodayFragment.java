@@ -88,14 +88,6 @@ public class TodayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            View decorView = getActivity().getWindow().getDecorView();
-//            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View
-//            .SYSTEM_UI_FLAG_LAYOUT_STABLE);
-//            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
-//        }
-//        getActivity().setContentView(R.layout.fragment_today);
-
         bingPicImg = view.findViewById(R.id.bing_pic_img);
         weatherLayout = view.findViewById(R.id.weather_layout);
         titleCity = view.findViewById(R.id.title_city);
@@ -237,12 +229,8 @@ public class TodayFragment extends Fragment {
         forecastLayout.removeAllViews();
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences
                 (getActivity()).edit();
-        Log.i(TAG, weather.basic.cityId);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor.putString("cityId", weather.basic.cityId);
         editor.apply();
-        String cityId = preferences.getString("cityId", null);
-        Log.i(TAG, "cityId" + cityId);
         DataBaseUtil.getInstance().saveWeatherInfo(weather.basic.cityId, weather.basic.update.updateTime.split(" ")[0], weather.now.temperature);
         for (Forecast forecast : weather.forecastList) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.forecast_item,

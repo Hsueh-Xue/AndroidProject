@@ -26,17 +26,30 @@ import com.example.finalproject.util.DataBaseUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.transform.Result;
+
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.ValueShape;
+import lecho.lib.hellocharts.util.ChartUtils;
+import lecho.lib.hellocharts.view.LineChartView;
+
 
 public class HistoryFragment extends Fragment {
     private static final String TAG = "HistoryFragment";
 
-    private ArrayAdapter<WeatherInfo> adapter;
-
-    private ListView listView;
-
-    private List<WeatherInfo> weatherInfoList = new ArrayList<>();
-
     private Button button;
+
+    private int number = 7;
+
+    private List<WeatherInfo> weatherInfoList;
+
+    private LineChartView  lineChartView;
+
+    private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
 
     public HistoryFragment() {
 
@@ -52,9 +65,11 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listView = view.findViewById(R.id.list_view);
-        adapter = new WeatherAdapter(getActivity(), R.layout.item_layout, weatherInfoList);
-        listView.setAdapter(adapter);
+//        listView = view.findViewById(R.id.list_view);
+//        adapter = new WeatherAdapter(getActivity(), R.layout.item_layout, weatherInfoList);
+//        listView.setAdapter(adapter);
+
+        lineChartView = view.findViewById(R.id.line_chart);
 
         button = view.findViewById(R.id.choose_button);
         final PopupMenu popupMenu = new PopupMenu(getActivity(), button);
@@ -64,7 +79,7 @@ public class HistoryFragment extends Fragment {
             public void onClick(View view) {
                 final SharedPreferences.Editor editor =
                         PreferenceManager.getDefaultSharedPreferences
-                        (getActivity()).edit();
+                                (getActivity()).edit();
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -124,31 +139,73 @@ public class HistoryFragment extends Fragment {
                 });
             }
         });
+
+        refresh();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         refresh();
-
     }
 
-    public void refresh() {
+    private void getData() {
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
         String cityId = preferences.getString("cityId", null);
-        int number = 7;
+        number = 7;
         String numberString = preferences.getString("number", null);
         if (numberString != null) {
             number = Integer.parseInt(numberString);
         }
-        List<WeatherInfo> weatherInfos = DataBaseUtil.getInstance().selectWeather(cityId, number);
-        weatherInfoList.clear();
-        for (WeatherInfo weatherInfo : weatherInfos) {
-            weatherInfoList.add(weatherInfo);
+        weatherInfoList  = DataBaseUtil.getInstance().selectWeather(cityId, number);
+    }
+
+    public void refresh() {
+        getData();
+        Log.i(TAG, "weather" + weatherInfoList.size());
+        List<PointValue> pointValues = new ArrayList<>();
+        String[] xData = new String[weatherInfoList.size()];
+
+//        获取x的标注
+        for (int i = 0; i < weatherInfoList.size(); ++i) {
+            xData[i] = weatherInfoList.get(i).getDate();
         }
-        Log.i(TAG, cityId + " " + weatherInfoList.size() + " " + number);
-        adapter.notifyDataSetChanged();
-        listView.setSelection(0);
+
+//        设置X 轴的显示
+        for (int i = 0; i < xData.length; ++i) {
+            mAxisXValues.add(new AxisValue(i).setLabel(xData[i]));
+        }
+
+//        获取坐标点
+        for (int i = 0;  i < weatherInfoList.size(); ++i) {
+            pointValues.add(new PointValue((float) i, Float.valueOf(weatherInfoList.get(i).getTemperature())));
+        }
+
+
+        Log.i(TAG, "Point" + pointValues.size());
+        Line line = new Line(pointValues);
+        line.setColor(ChartUtils.COLOR_BLUE);
+        line.setShape(ValueShape.CIRCLE);
+        line.setHasPoints(true);
+        line.setHasLabels(true);
+
+        ArrayList<Line> lines = new ArrayList<>();
+        lines.add(line);
+
+        LineChartData data = new LineChartData(lines);
+
+        Axis axisX = new Axis();
+        axisX.setName("日期");
+        axisX.setValues(mAxisXValues);
+        data.setAxisXBottom(axisX);
+
+        Axis axisY = new Axis();
+        axisY.setName("气温");
+        data.setAxisYLeft(axisY);
+
+        lineChartView.setZoomEnabled(true);
+        lineChartView.setLineChartData(data);
+
     }
 }

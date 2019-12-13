@@ -30,6 +30,7 @@ public class SettingsFragment extends Fragment {
     LoginFragment loginFragment;
     RegisterFragment registerFragment;
     SubSettingsFragment subSettingsFragment;
+    ChangePasswordFragment changePasswordFragment;
 
     public SettingsFragment() {
 
@@ -54,10 +55,13 @@ public class SettingsFragment extends Fragment {
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
         subSettingsFragment = new SubSettingsFragment();
+        changePasswordFragment = new ChangePasswordFragment();
 
         fragmentTransaction.add(R.id.settingsFrameLayout, loginFragment, "login").show(loginFragment);
         fragmentTransaction.add(R.id.settingsFrameLayout, registerFragment, "register").hide(registerFragment);
         fragmentTransaction.add(R.id.settingsFrameLayout, subSettingsFragment, "subSettings").hide(subSettingsFragment);
+        fragmentTransaction.add(R.id.settingsFrameLayout, changePasswordFragment, "changePassword"
+        ).hide(changePasswordFragment);
 
         fragmentTransaction.commit();
 
@@ -89,5 +93,18 @@ public class SettingsFragment extends Fragment {
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.show(loginFragment).hide(subSettingsFragment).commit();
+    }
+
+    public void gotoChangePassword() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.show(changePasswordFragment).hide(subSettingsFragment).commit();
+
+    }
+
+    public void fromChangeToSub() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.show(subSettingsFragment).hide(changePasswordFragment).commit();
     }
 }

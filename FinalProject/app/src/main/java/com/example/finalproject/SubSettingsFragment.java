@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,13 @@ public class SubSettingsFragment extends Fragment {
             public void onClick(View view) {
                 UserManage.getInstance().Destroy(getActivity());
                 ((SettingsFragment)(SubSettingsFragment.this.getParentFragment())).logout();
+            }
+        });
+
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((SettingsFragment)(SubSettingsFragment.this.getParentFragment())).gotoChangePassword();
             }
         });
     }

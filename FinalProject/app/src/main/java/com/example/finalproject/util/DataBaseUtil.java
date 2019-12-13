@@ -48,11 +48,15 @@ public class DataBaseUtil {
         }
     }
 
-    public void changePassword(String userName, String password, String newPassword) {
+    public boolean changePassword(String userName, String password, String newPassword) {
         UserInfo userInfo = (UserInfo) DataSupport.where("userName = ? and password = ?",
                 userName, password).findFirst(UserInfo.class);
+        if (userInfo == null) {
+            return false;
+        }
         userInfo.setPassword(newPassword);
         userInfo.save();
+        return true;
     }
 
     public List<WeatherInfo> selectWeather(String cityId, int Number) {

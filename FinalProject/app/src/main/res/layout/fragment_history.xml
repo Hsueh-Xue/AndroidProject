@@ -32,10 +32,16 @@
     </RelativeLayout>
 
     <!-- TODO: Update blank fragment layout -->
-    <lecho.lib.hellocharts.view.LineChartView
-        android:id="@+id/line_chart"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:paddingTop="20dp" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:paddingTop="20dp" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -11,6 +11,7 @@ import com.example.finalproject.gson.Weather;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DataBaseUtil {
@@ -63,14 +64,14 @@ public class DataBaseUtil {
         List<WeatherInfo> weatherList =
                 DataSupport.where("cityid = ?", cityId).find(WeatherInfo.class);
         List<WeatherInfo> response = new ArrayList<WeatherInfo>();
-        for (int i = 0; i < Number && i < weatherList.size(); ++i) {
+        for (int i = weatherList.size() - 1, j = 0; i >= 0 && j < Number; --i, ++j) {
             response.add(weatherList.get(i));
         }
+        Collections.reverse(response);
         return response;
     }
 
     public void saveWeatherInfo(String cityId, String date, String temperature) {
-//        List<WeatherInfo> weatherInfos = DataSupport.findAll(WeatherInfo.class);
         WeatherInfo weatherInfo =
                 DataSupport.where("cityid = ? AND date = ?", cityId, date).findFirst(WeatherInfo.class);
         if (weatherInfo == null) {

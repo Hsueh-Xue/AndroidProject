@@ -32,17 +32,19 @@
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="请输入用户名"            android:textColorHint="#fff"
-                android:textColor="#fff" />
+                android:hint="请输入用户名"
+                android:textColor="#fff"
+                android:textColorHint="#fff" />
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="请输入密码"            android:textColorHint="#fff"
+                android:hint="请输入密码"
                 android:inputType="textPassword"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:textColorHint="#fff" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
